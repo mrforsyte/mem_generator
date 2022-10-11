@@ -4,7 +4,6 @@ import argparse
 
 # @TODO Import your Ingestor and MemeEngine classes
 
-
 def generate_meme(path=None, body=None, author=None):
     """ Generate a meme given an path and a quote """
     img = None
@@ -56,5 +55,4 @@ if __name__ == "__main__":
     # author - quote author to add to the image
 
     args = parser.parse_args()
-
     print(generate_meme(args.path, args.body, args.author))

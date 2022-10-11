@@ -1,4 +1,5 @@
 import abc
+import subprocess
 
 class IngestorInterface(abc):
 	def can_ingest(cls,path:str)->boolean:
