@@ -24,10 +24,27 @@ class PDFIngestor(IngestorInterface):
 		return True
 
 
+	def parse(cls,path:str)->List[QuoteModel]:
+		"""
+		import subprocess as sp
+
+def pdftotext(path, output_file):
+    #Generate a text rendering of a PDF file in the form of a list of lines.
+    args = ['pdftotext', '-layout', path, output_file]
+    cp = sp.run(
+      args, stdout=sp.PIPE, stderr=sp.DEVNULL,
+      check=True, text=True
+    )
+    return cp.stdout
+
+    """
+
+
+
+
 class CSVParser(IngestorInterface):
 	
 	def can_ingest(cls,path:str)->boolean:
-
 		file_name,file_extension = os.path.splitext(path)
 		
 		if 'csv' not in file_extension:
@@ -37,8 +54,10 @@ class CSVParser(IngestorInterface):
 
 	def parse(cls,path:str)->List[QuoteModel]:
 		list_of_quotes = []
+		
 		with open(path) as csv_reader:
 			my_text = csv.DictReader(csv_reader)
+			
 			for row in my_text:
 				quote_author = QuoteModel(row['author'], row['body'])
 				list_of_quotes.append(quote_author)
@@ -73,9 +92,6 @@ class DocsParser(IngestorInterface):
 
 		
 
-
-
-
 class TXTParser(IngestorInterface):
 
 	def can_ingest(cls,path:str)->boolean:
@@ -101,8 +117,6 @@ class TXTParser(IngestorInterface):
 				list_of_quotes.append(quote_author)
 
 		return list_of_quotes
-
-
 
 	
 class QuoteModel():
