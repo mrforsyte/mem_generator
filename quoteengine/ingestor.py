@@ -25,20 +25,29 @@ class PDFIngestor(IngestorInterface):
 
 
 	def parse(cls,path:str)->List[QuoteModel]:
-		"""
-		import subprocess as sp
+		#return cp.stdout
+		#Generate a text rendering of a PDF file in the form of a list of lines.
+		list_of_quotes = []
 
-def pdftotext(path, output_file):
-    #Generate a text rendering of a PDF file in the form of a list of lines.
-    args = ['pdftotext', '-layout', path, output_file]
-    cp = sp.run(
-      args, stdout=sp.PIPE, stderr=sp.DEVNULL,
-      check=True, text=True
-    )
-    return cp.stdout
+    	OUTPUT_FILE = './_data/DogQuotes/text.txt'
+    	
+    	args = ['pdftotext', '-layout', path, OUTPUT_FILE]
+    	
+    	cp = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True, text=True)
 
-    """
+    	with open('./_data/DogQuotes/text.txt') as text:
+    		
+    		ttext = text.read()
+    		
+    		text_list = ttext.splitlines()
+    		
+    		for _ in text_list:
 
+    			if len(_) > 1:
+
+    				body,author = _.split('-')
+    				quote_author = QuoteModel(author,quote)
+					list_of_quotes.append(quote_author)
 
 
 
