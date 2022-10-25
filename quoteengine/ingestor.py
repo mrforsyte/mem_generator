@@ -3,6 +3,7 @@ from PIL import Image, ImageFont, ImageDraw
 import subprocess
 import csv
 import docx2txt
+import os
 
 
 class IngestorInterface(ABC):
@@ -40,13 +41,13 @@ class PDFIngestor(IngestorInterface):
 			for _ in text_list:
 				if len(_) > 1:
 					body,author = _.split('-')
-					quote_author = QuoteModel(author,quote)
+					quote_author = QuoteModel(author,body)
 					list_of_quotes.append(quote_author)
 			return list_of_quotes
 
 
 
-class CSVParser(IngestorInterface):
+class CSVIngestor(IngestorInterface):
 	
 	def can_ingest(cls,path:str)->bool:
 		file_name,file_extension = os.path.splitext(path)
@@ -70,7 +71,7 @@ class CSVParser(IngestorInterface):
 
  
 
-class DocsParser(IngestorInterface):
+class DocsIngestor(IngestorInterface):
 	
 	def can_ingest(cls,path:str)->bool:
 
@@ -94,7 +95,7 @@ class DocsParser(IngestorInterface):
 		return list_of_quotes
 
 		
-class TXTParser(IngestorInterface):
+class TXTIngestor(IngestorInterface):
 
 	def can_ingest(cls,path:str)->bool:
 
@@ -125,6 +126,37 @@ class QuoteModel():
 	def __init__(self, author, body):
 		self.author = author
 		self.body = body
+
+
+class Ingestor:
+
+	@classmethod
+	def parse(self,path):
+		parser_list = []
+
+		pdf = PDFIngestor()
+		parser_list.append(pdf)
+	
+		txt = TXTIngestor()
+		parser_list.append(txt)
+	
+		csv_quote = CSVIngestor()
+		parser_list.append(csv_quote)
+	
+		docs = DocsIngestor()
+		parser_list.append(docs)
+
+		for parser in parser_list:
+			if parser.can_ingest(path):
+				parsed_quote = parser.parse(path)
+
+		return parsed_quote
+
+
+
+
+
+
 
 
 class MemeEngine():
