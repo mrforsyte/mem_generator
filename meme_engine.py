@@ -16,3 +16,14 @@ class MemeEngine():
 
 
         return None
+
+
+"""
+
+from PIL import Image
+import os
+image_path = "path/to/image"
+os.mkdir(image_path)
+image = image.save(f"{image_path}/image.png")
+
+"""
