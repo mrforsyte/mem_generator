@@ -4,15 +4,16 @@ import requests
 from flask import Flask, render_template, abort, request
 from quoteengine.ingestor import Ingestor, QuoteModel
 from meme_engine import MemeEngine
+from PIL import Image
 
 app = Flask(__name__)
 
-#meme = MemeEngine('./static')
-meme = MemeEngine()
+meme = MemeEngine('./static')
+#meme = MemeEngine()
 
 def setup():
     """ Load all resources """
-    quotes = None
+    quotes = []
 
     quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
                    './_data/DogQuotes/DogQuotesDOCX.docx',
@@ -21,18 +22,14 @@ def setup():
 
     # TODO: Use the Ingestor class to parse all files in the
     # quote_files variable
+
     for f in quote_files:
         quotes.extend(Ingestor.parse(f))
 
     images_path = "./_data/photos/dog/"
 
-    for root, dirs, files in os.walk(images):
+    for root, dirs, files in os.walk(images_path):
         imgs = [os.path.join(root, name) for name in files]
-
-
-    # TODO: Use the pythons standard library os class to find all
-    # images within the images images_path directory
-    imgs = None
 
     return quotes, imgs
 
@@ -44,13 +41,9 @@ quotes, imgs = setup()
 def meme_rand():
     """ Generate a random meme """
 
-    # @TODO:
-    # Use the random python standard library class to:
-    # 1. select a random image from imgs array
-    # 2. select a random quote from the quotes array
-
-    img = random.choice(images)
+    img = random.choice(imgs)
     quote = random.choice(quotes)
+    
     path = meme.make_meme(img, quote.body, quote.author)
     return render_template('meme.html', path=path)
 
@@ -65,6 +58,19 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
+    if request.method == "POST":
+        img_url = request.form.get("image_url")
+        response = requests.get(url, stream = True)
+
+        if response.status_code == 200:
+            file = open("image.png", "wb")
+            file.write(response.content)
+            image_path = meme.path
+            os.mkdir(image_path)
+            image = image.save(f"{image_path}/image.png")
+            file.close()
+
+
     # @TODO:
     # 1. Use requests to save the image from the image_url
     #    form param to a temp local file.
@@ -78,4 +84,4 @@ def meme_post():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
