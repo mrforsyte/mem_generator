@@ -8,9 +8,7 @@ from meme_engine import MemeEngine
 from PIL import Image
 
 app = Flask(__name__)
-
 meme = MemeEngine('./static')
-#meme = MemeEngine()
 
 def setup():
     """ Load all resources """
@@ -21,8 +19,6 @@ def setup():
                    './_data/DogQuotes/DogQuotesPDF.pdf',
                    './_data/DogQuotes/DogQuotesCSV.csv']
 
-    # TODO: Use the Ingestor class to parse all files in the
-    # quote_files variable
 
     for f in quote_files:
         quotes.extend(Ingestor.parse(f))
@@ -68,19 +64,9 @@ def meme_post():
         os.mkdir(meme.path)
         img.save(f"{meme.path}/img.png")
         meme.make_meme(f"{meme.path}/img.png",author,body)
-        shutil.rmtree(meme.path)
-
-        
-
-    # @TODO:
-    # 1. Use requests to save the image from the image_url
-    #    form param to a temp local file.
-    # 2. Use the meme object to generate a meme using this temp
-    #    file and the body and author form paramaters.
-    # 3. Remove the temporary saved image.
+        shutil.rmtree(meme.path)    
 
     path = None
-
     return render_template('meme.html', path=path)
 
 

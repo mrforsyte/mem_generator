@@ -1,14 +1,13 @@
 from abc import ABC
-from PIL import Image, ImageFont, ImageDraw
 import subprocess
 import csv
 import docx2txt
+import docx
 import os
-
+import docx
+import random
 
 class IngestorInterface(ABC):
-
-
 	def can_ingest(cls,path:str):
 		pass
 
@@ -19,7 +18,6 @@ class IngestorInterface(ABC):
 class PDFIngestor(IngestorInterface):
 	
 	def can_ingest(cls,path:str)->bool:
-
 		file_name,file_extension = os.path.splitext(path)
 		
 		if 'pdf' not in file_extension:
@@ -75,24 +73,29 @@ class DocsIngestor(IngestorInterface):
 	
 	def can_ingest(cls,path:str)->bool:
 
-		file_name,file_extension = os.path.splitext(path)
-	
+		file_name,file_extension = os.path.splitext(path)	
 		if 'doc' not in file_extension:
 			return False
 
 		return True
 
 	def parse(cls,path:str):
+		document = docx.Document(path)
+		list_of_quotes = document.paragraphs
+		actual_quotes = []
+		for _ in list_of_quotes:
+			if _.text:
+				actual_quotes.append(_)
 
-		list_of_quotes = []
-		my_text = docx2txt.process(path).split('-')
-		counter = 0
-		
-		while counter<len(my_text)-1:
-			quote_model = QuoteModel(my_text[counter],my_text[counter+1])
-			list_of_quotes.append(quote_model)
-			counter+=1
-		return list_of_quotes
+		saying = random.choice(actual_quotes)
+		print(saying.text)
+		quote,author = saying.text.split('-')
+
+		q = QuoteModel(author,quote)
+		quotes_list = []
+		quotes_list.append(q)
+	
+		return quotes_list
 
 		
 class TXTIngestor(IngestorInterface):
@@ -151,34 +154,3 @@ class Ingestor:
 				parsed_quote = parser.parse(path)
 
 		return parsed_quote
-
-
-
-
-
-
-
-
-class MemeEngine():
-
-	def make_meme(self, img, text):
-		image = Image.open(img)
-		draw = ImageDraw.Draw(image)
-		font = ImageFont.truetype("arial.ttf",24)
-		draw.text((50,50),text,font=font)
-		
-
-		
-'''
-import random
-img_collection_pathes = [
-				'_data/photos/dog/xander_1.jpg','_data/photos/dog/xander_2.jpg',
-				'_data/photos/dog/xander_3.jpg','_data/photos/dog/xander_4.jpg'
-					
-				]
-num = random.randint(0,3)
-from PIL import Image
-img = Image.open(img_collection_pathes[num])
-print(img.format, img.size, img.mode)
-img.show()
-'''
