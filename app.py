@@ -1,6 +1,7 @@
 import random
 import os
 import requests
+import shutil
 from flask import Flask, render_template, abort, request
 from quoteengine.ingestor import Ingestor, QuoteModel
 from meme_engine import MemeEngine
@@ -60,16 +61,16 @@ def meme_post():
 
     if request.method == "POST":
         img_url = request.form.get("image_url")
-        response = requests.get(url, stream = True)
+        author = request.form.get("author")
+        body = request.form.get("body")
 
-        if response.status_code == 200:
-            file = open("image.png", "wb")
-            file.write(response.content)
-            image_path = meme.path
-            os.mkdir(image_path)
-            image = image.save(f"{image_path}/image.png")
-            file.close()
+        img = Image.open(requests.get(img_url, stream=True).raw)
+        os.mkdir(meme.path)
+        img.save(f"{meme.path}/img.png")
+        meme.make_meme(f"{meme.path}/img.png",author,body)
+        shutil.rmtree(meme.path)
 
+        
 
     # @TODO:
     # 1. Use requests to save the image from the image_url
