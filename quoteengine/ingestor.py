@@ -6,6 +6,7 @@ import docx
 import os
 import docx
 import random
+import pandas as df
 
 class IngestorInterface(ABC):
 	def can_ingest(cls,path:str):
@@ -57,13 +58,11 @@ class CSVIngestor(IngestorInterface):
 
 	def parse(cls,path:str):
 		list_of_quotes = []
+		file = df.read_csv(path)
 		
-		with open(path) as csv_reader:
-			my_text = csv.DictReader(csv_reader)
-			
-			for row in my_text:
-				quote_author = QuoteModel(row['author'], row['body'])
-				list_of_quotes.append(quote_author)
+		for row in file.iterrows():
+			q = QuoteModel(row[1][0],row[1][1])
+			list_of_quotes.append(q)
 
 		return list_of_quotes
 
