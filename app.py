@@ -12,7 +12,7 @@ meme = MemeEngine('./static')
 
 def setup():
     """ Load all resources """
-    
+
     quotes = []
     quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
                    './_data/DogQuotes/DogQuotesDOCX.docx',
@@ -48,6 +48,7 @@ def meme_rand():
 @app.route('/create', methods=['GET'])
 def meme_form():
     """ User input for meme information """
+    
     return render_template('meme_form.html')
 
 
@@ -63,10 +64,10 @@ def meme_post():
         img = Image.open(requests.get(img_url, stream=True).raw)
         os.mkdir(meme.path)
         img.save(f"{meme.path}/img.png")
-        meme.make_meme(f"{meme.path}/img.png",author,body)
+        path = meme.make_meme(f"{meme.path}/img.png",author,body)
         shutil.rmtree(meme.path)    
 
-    path = None
+    
     return render_template('meme.html', path=path)
 
 

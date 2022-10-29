@@ -4,7 +4,6 @@ import argparse
 from quoteengine.ingestor import Ingestor, QuoteModel
 from meme_engine import MemeEngine
 
-# @TODO Import your Ingestor and MemeEngine classes
 
 def generate_meme(path=None, body=None, author=None):
     """ Generate a meme given an path and a quote """
@@ -13,20 +12,7 @@ def generate_meme(path=None, body=None, author=None):
 
     if path is None:
         ''' creating an array of images with pathes to them'''
-
-        '''
-    Result:
-           [
-        
-         './_data/photos/dog/xander_2.jpg',
-         './_data/photos/dog/xander_3.jpg',
-         '. /_data/photos/dog/xander_4.jpg',
-         '. /_data/photos/dog/xander_1.jpg'
-
-           ]
-        
-        '''
-
+   
         images = "./_data/photos/dog/"
         imgs = []
         for root, dirs, files in os.walk(images):
@@ -61,19 +47,14 @@ def generate_meme(path=None, body=None, author=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="Meme Generator",
-        description = 'Generates random quotes and pictures',
+        description = 'Generates meme from a given picture and a quote with an quthor',
         epilog = 'Let us hope it will work')
     parser.version = '1.0'
 
-    parser.add_argument("-a","--author",type = str, default=None)
-    parser.add_argument("-b","--body",type = str, default=None)
-    parser.add_argument("-p","--path",type = str, default=None)
-    parser.add_argument("-v","--version", action = "version")
-
-    # @TODO Use ArgumentParser to parse the following CLI arguments
-    # path - path to an image file
-    # body - quote body to add to the image
-    # author - quote author to add to the image
+    parser.add_argument("-a","--author",type=str, default=None)
+    parser.add_argument("-b","--body",type=str, default=None)
+    parser.add_argument("-p","--path",type=str, default=None)
+    parser.add_argument("-v","--version", action="version")
 
     args = parser.parse_args()
     print(generate_meme(args.path, args.body, args.author))

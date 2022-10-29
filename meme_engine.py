@@ -1,10 +1,17 @@
 from PIL import Image, ImageFont, ImageDraw
 
 class MemeEngine():
+    """ Class that combines given text and a picture """
+
+
     def __init__(self,path):
+        """ Takes one parametr as a path to a folder where an image should be saved """ 
+
         self.path = path
     
     def make_meme(self, img, text, text2):
+        """ Creates a meme from a given image and a quote with an author """
+
         image = Image.open(img)
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype("arial.ttf",34)
@@ -13,17 +20,4 @@ class MemeEngine():
         image.thumbnail((800,800))
         image.show()
 
-
-
-        return None
-
-
-"""
-
-from PIL import Image
-import os
-image_path = "path/to/image"
-os.mkdir(image_path)
-image = image.save(f"{image_path}/image.png")
-
-"""
+        return self.path

@@ -1,7 +1,5 @@
 from abc import ABC
 import subprocess
-import csv
-import docx2txt
 import docx
 import os
 import docx
@@ -9,16 +7,23 @@ import random
 import pandas as df
 
 class IngestorInterface(ABC):
-	def can_ingest(cls,path:str):
+	""" Abstract class that has two methods, allowing identify if an object is parsable and
+	    parse it if it is.
+	"""
+
+	def can_ingest(cls,path:str) ->bool:
 		pass
 
 	def parse(cls,path:str):
+		""" Parses a file by a given pass  """
 		pass
 
-
 class PDFIngestor(IngestorInterface):
+	""" A specific Ingestro that parses PDF files"""
 	
 	def can_ingest(cls,path:str)->bool:
+		""" Makes sure the file to parse is of PDF format"""
+
 		file_name,file_extension = os.path.splitext(path)
 		
 		if 'pdf' not in file_extension:
@@ -28,12 +33,16 @@ class PDFIngestor(IngestorInterface):
 
 
 	def parse(cls,path:str):
-		#return cp.stdout
-		#Generate a text rendering of a PDF file in the form of a list of lines.
+		"""Parses files of pdf types  """
+
 		list_of_quotes = []
+		
 		OUTPUT_FILE = './_data/DogQuotes/text.txt'
+		
 		args = ['pdftotext', '-layout', path, OUTPUT_FILE]
+		
 		cp = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True, text=True)
+		
 		with open('./_data/DogQuotes/text.txt') as text:
 			ttext = text.read()
 			text_list = ttext.splitlines()
@@ -42,13 +51,15 @@ class PDFIngestor(IngestorInterface):
 					body,author = _.split('-')
 					quote_author = QuoteModel(author,body)
 					list_of_quotes.append(quote_author)
+			
 			return list_of_quotes
 
 
-
 class CSVIngestor(IngestorInterface):
+	""" Specific type of ingestor parsing csv files """
 	
 	def can_ingest(cls,path:str)->bool:
+		""" Checks if file type is pdf"""
 		file_name,file_extension = os.path.splitext(path)
 		
 		if 'csv' not in file_extension:
@@ -57,6 +68,8 @@ class CSVIngestor(IngestorInterface):
 		return True
 
 	def parse(cls,path:str):
+		""" parses given file"""
+
 		list_of_quotes = []
 		file = df.read_csv(path)
 		
@@ -67,10 +80,11 @@ class CSVIngestor(IngestorInterface):
 		return list_of_quotes
 
  
-
 class DocsIngestor(IngestorInterface):
+	""" Specific type of Ingestor parsing docs files"""
 	
 	def can_ingest(cls,path:str)->bool:
+		""" Checks if given file type is docs """
 
 		file_name,file_extension = os.path.splitext(path)	
 		if 'doc' not in file_extension:
@@ -79,6 +93,8 @@ class DocsIngestor(IngestorInterface):
 		return True
 
 	def parse(cls,path:str):
+		""" Parses docs files"""
+
 		document = docx.Document(path)
 		list_of_quotes = document.paragraphs
 		actual_quotes = []
@@ -98,8 +114,10 @@ class DocsIngestor(IngestorInterface):
 
 		
 class TXTIngestor(IngestorInterface):
+	""" Specific type of ingestor parsing txt files """
 
 	def can_ingest(cls,path:str)->bool:
+		""" Checks if type of given file is txt """
 
 		file_name,file_extension = os.path.splitext(path)
 
@@ -110,6 +128,7 @@ class TXTIngestor(IngestorInterface):
 
 	
 	def parse(cls,path:str):
+		""" Parses txt files """
 		
 		list_of_quotes = []
 		
@@ -124,16 +143,21 @@ class TXTIngestor(IngestorInterface):
 		return list_of_quotes
 
 class QuoteModel():
+	""" Class represents a model with two attributes author and body """
 
 	def __init__(self, author, body):
+		""" Initializes object with two attributes author of a quote and a body of it """
 		self.author = author
 		self.body = body
 
 
 class Ingestor:
+	""" Class that implements all types of ingesters and pick appropriate one to parse given file """
 
 	@classmethod
 	def parse(self,path):
+		""" parsing by getting appropriate ingestor for multiple file types """
+
 		parser_list = []
 
 		pdf = PDFIngestor()
