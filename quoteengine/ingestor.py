@@ -2,7 +2,6 @@ from abc import ABC
 import subprocess
 import docx
 import os
-import docx
 import random
 import pandas as df
 
@@ -116,11 +115,7 @@ class DocsIngestor(IngestorInterface):
 		list_of_quotes = document.paragraphs
 
 		actual_quotes = [_ for _ in list_of_quotes if _.text]
-		'''
-		for _ in list_of_quotes:
-			if _.text:
-				actual_quotes.append(_)
-		'''
+
 
 		saying = random.choice(actual_quotes)
 		print(saying.text)
