@@ -1,0 +1,17 @@
+#mkdocs.yml
+
+site_name: Meme generator
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings
+
+nav:
+  - index.md 
+  - tutorials.md
+  - how-to-guide.md
+  - explanations.md
+  - reference.md
+

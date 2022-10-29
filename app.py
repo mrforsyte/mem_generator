@@ -62,10 +62,10 @@ def meme_post():
         body = request.form.get("body")
 
         img = Image.open(requests.get(img_url, stream=True).raw)
-        os.mkdir(meme.path)
-        img.save(f"{meme.path}/img.png")
-        path = meme.make_meme(f"{meme.path}/img.png",author,body)
-        shutil.rmtree(meme.path)    
+        os.mkdir("./arbitrary")
+        img.save("./arbitrary/img.png")
+        path = meme.make_meme("./arbitrary/img.png",author,body)
+        shutil.rmtree("./arbitrary")    
 
     
     return render_template('meme.html', path=path)

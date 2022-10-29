@@ -1,12 +1,13 @@
 from PIL import Image, ImageFont, ImageDraw
+import os
+from os.path import exists
+import datetime
 
 class MemeEngine():
     """ Class that combines given text and a picture """
 
-
     def __init__(self,path):
         """ Takes one parametr as a path to a folder where an image should be saved """ 
-
         self.path = path
     
     def make_meme(self, img, text, text2):
@@ -23,6 +24,13 @@ class MemeEngine():
         draw.text((50,50),text,font=font)
         draw.text((105,105),text2,font=font)
         image.thumbnail((800,800))
+        the_moment = str(datetime.datetime.now())
+        if exists(self.path):
+            pass
+        else:
+            os.mkdir(self.path)
+
+        image.save(f"{self.path}/{the_moment}img.png")
         image.show()
 
         return self.path
