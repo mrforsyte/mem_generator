@@ -114,10 +114,13 @@ class DocsIngestor(IngestorInterface):
 			print('File was not found on this path')
 		
 		list_of_quotes = document.paragraphs
-		actual_quotes = []
+
+		actual_quotes = [_ for _ in list_of_quotes if _.text]
+		'''
 		for _ in list_of_quotes:
 			if _.text:
 				actual_quotes.append(_)
+		'''
 
 		saying = random.choice(actual_quotes)
 		print(saying.text)
@@ -161,7 +164,7 @@ class TXTIngestor(IngestorInterface):
 			print('File was not found on this path')
 			
 		for _ in text:
-			
+
 			quote,author = _.split('-')
 			quote_author = QuoteModel(author,quote)
 			list_of_quotes.append(quote_author)
