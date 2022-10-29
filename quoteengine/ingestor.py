@@ -60,7 +60,12 @@ class CSVIngestor(IngestorInterface):
 	
 	def can_ingest(cls,path:str)->bool:
 		""" Checks if file type is pdf"""
-		file_name,file_extension = os.path.splitext(path)
+
+		try:
+			file_name,file_extension = os.path.splitext(path)
+		
+		except FileNotFoundError:
+			print('File was not found on this path')
 		
 		if 'csv' not in file_extension:
 			return False
@@ -71,7 +76,10 @@ class CSVIngestor(IngestorInterface):
 		""" parses given file"""
 
 		list_of_quotes = []
-		file = df.read_csv(path)
+		try:
+			file = df.read_csv(path)
+		except FileNotFoundError:
+			print('File was not found on this path')
 		
 		for row in file.iterrows():
 			q = QuoteModel(row[1][0],row[1][1])
@@ -85,8 +93,12 @@ class DocsIngestor(IngestorInterface):
 	
 	def can_ingest(cls,path:str)->bool:
 		""" Checks if given file type is docs """
+		try:
+			file_name,file_extension = os.path.splitext(path)
 
-		file_name,file_extension = os.path.splitext(path)	
+		except FileNotFoundError:
+			print('File was not found on this path')
+		
 		if 'doc' not in file_extension:
 			return False
 
@@ -95,7 +107,12 @@ class DocsIngestor(IngestorInterface):
 	def parse(cls,path:str):
 		""" Parses docs files"""
 
-		document = docx.Document(path)
+		try:
+			document = docx.Document(path)
+		
+		except FileNotFoundError:
+			print('File was not found on this path')
+		
 		list_of_quotes = document.paragraphs
 		actual_quotes = []
 		for _ in list_of_quotes:
@@ -119,7 +136,11 @@ class TXTIngestor(IngestorInterface):
 	def can_ingest(cls,path:str)->bool:
 		""" Checks if type of given file is txt """
 
-		file_name,file_extension = os.path.splitext(path)
+		try:
+			file_name,file_extension = os.path.splitext(path)
+
+		except FileNotFoundError:
+			print('File was not found on this path')
 
 		if 'txt' not in file_extension:
 			return False
@@ -132,13 +153,18 @@ class TXTIngestor(IngestorInterface):
 		
 		list_of_quotes = []
 		
-		with open(path) as reader:
-			text = reader.readlines()
-			for _ in text:
+		try:
+			with open(path) as reader:
+				text = reader.readlines()
 
-				quote,author = _.split('-')
-				quote_author = QuoteModel(author,quote)
-				list_of_quotes.append(quote_author)
+		except FileNotFoundError:
+			print('File was not found on this path')
+			
+		for _ in text:
+			
+			quote,author = _.split('-')
+			quote_author = QuoteModel(author,quote)
+			list_of_quotes.append(quote_author)
 
 		return list_of_quotes
 

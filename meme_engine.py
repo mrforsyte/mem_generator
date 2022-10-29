@@ -12,7 +12,12 @@ class MemeEngine():
     def make_meme(self, img, text, text2):
         """ Creates a meme from a given image and a quote with an author """
 
-        image = Image.open(img)
+        try:
+            image = Image.open(img)
+
+        except FileNotFoundError:
+            print('File was not found on this path')
+        
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype("arial.ttf",34)
         draw.text((50,50),text,font=font)
