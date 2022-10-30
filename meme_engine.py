@@ -34,8 +34,10 @@ class MemeEngine():
             pass
         else:
             os.mkdir(self.path)
+        path = f"{self.path}/{the_moment}img.png"
 
-        image.save(f"{self.path}/{the_moment}img.png")
-        image.show()
+        image.save(path)
 
-        return self.path
+        #image.show()
+
+        return path

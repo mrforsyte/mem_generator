@@ -59,16 +59,16 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
-    if request.method == "POST":
-        img_url = request.form.get("image_url")
-        author = request.form.get("author")
-        body = request.form.get("body")
+    
+    img_url = request.form.get("image_url")
+    author = request.form.get("author")
+    body = request.form.get("body")
 
-        img = Image.open(requests.get(img_url, stream=True).raw)
-        os.mkdir("./arbitrary")
-        img.save("./arbitrary/img.png")
-        path = meme.make_meme("./arbitrary/img.png",author,body)
-        shutil.rmtree("./arbitrary")    
+    img = Image.open(requests.get(img_url, stream=True).raw)
+    os.mkdir("./arbitrary")
+    img.save("./arbitrary/img.png")
+    path = meme.make_meme("./arbitrary/img.png",author,body)
+    shutil.rmtree("./arbitrary")    
     
     return render_template('meme.html', path=path)
 
