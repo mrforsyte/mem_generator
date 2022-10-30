@@ -1,3 +1,6 @@
+#meme.py
+"""This modules realizes CLI script that generates a meme from defalut data or from given paramters."""
+
 import os
 import random
 import argparse
@@ -39,7 +42,6 @@ def generate_meme(path=None, body=None, author=None):
         quote = QuoteModel(body, author)
 
     meme = MemeEngine('./tmp')
-    #meme = MemeEngine()
     path = meme.make_meme(img, quote.body, quote.author)
     return path
     

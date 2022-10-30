@@ -1,3 +1,6 @@
+#app.py
+""" THis module realizes web app implementation of the meme generator."""
+
 import random
 import os
 import requests
@@ -66,7 +69,6 @@ def meme_post():
         img.save("./arbitrary/img.png")
         path = meme.make_meme("./arbitrary/img.png",author,body)
         shutil.rmtree("./arbitrary")    
-
     
     return render_template('meme.html', path=path)
 

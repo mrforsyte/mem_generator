@@ -1,4 +1,11 @@
 #ingestor.py
+"""
+This module implements IngestorInterface interface to allow classes inheriting it implement veraety of ingestors to deal with
+files of multiple types such as docs, txt, pdf,cvs. It also implements the QuoteModel class that with two attributes and several
+methods.
+
+"""
+
 
 from abc import ABC
 import subprocess
@@ -175,6 +182,13 @@ class QuoteModel():
 		""" Initializes object with two attributes author of a quote and a body of it """
 		self.author = author
 		self.body = body
+
+	def __str__(self):
+		""" Human readable model of the QuoteModel instance representation """
+		return f"{self.body} - {self.author}" 
+
+
+
 
 
 class Ingestor:

@@ -1,2 +1,3 @@
 # mem_generator
-my implementation of udacity mem generator assignment
+my implementation of udacity meme generator assignment
+

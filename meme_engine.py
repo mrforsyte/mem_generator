@@ -1,3 +1,8 @@
+#meme_engime.py
+"""This module implements MemeEngine class that creates a meme from a given picture and a text. It has one attribute - path to 
+the folder that saves newly-created memes.
+ """
+ 
 from PIL import Image, ImageFont, ImageDraw
 import os
 from os.path import exists
