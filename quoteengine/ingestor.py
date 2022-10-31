@@ -90,7 +90,7 @@ class CSVIngestor(IngestorInterface):
 			print('File was not found on this path')
 		
 		for row in file.iterrows():
-			q = QuoteModel(row[1][0],row[1][1])
+			q = QuoteModel(row[1][1],row[1][0])
 			list_of_quotes.append(q)
 
 		return list_of_quotes
