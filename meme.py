@@ -7,7 +7,8 @@ from defalut data or from given paramters.
 import os
 import random
 import argparse
-from quoteengine.ingestor import Ingestor, QuoteModel
+from quoteengine.ingestorInterface import QuoteModel
+from quoteengine.ingestor import Ingestor
 from meme_engine import MemeEngine
 
 
