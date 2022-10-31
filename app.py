@@ -9,7 +9,8 @@ import os
 import requests
 import shutil
 from flask import Flask, render_template, abort, request
-from quoteengine.ingestor import Ingestor, QuoteModel
+from quoteengine.ingestor import Ingestor
+from quoteengine.ingesface import QuoteModel
 from meme_engine import MemeEngine
 from PIL import Image
 

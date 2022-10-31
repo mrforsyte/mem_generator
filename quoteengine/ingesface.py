@@ -1,4 +1,4 @@
-# ingestorInterface.py
+# ingestorinterface.py
 """
 This module implements IngestorInterface interface to allow classes
 inheriting it implement veraety of ingestors to deal with

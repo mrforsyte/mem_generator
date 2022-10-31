@@ -7,7 +7,7 @@ from defalut data or from given paramters.
 import os
 import random
 import argparse
-from quoteengine.ingestorInterface import QuoteModel
+from quoteengine.ingesface import QuoteModel
 from quoteengine.ingestor import Ingestor
 from meme_engine import MemeEngine
 
@@ -43,25 +43,28 @@ def generate_meme(path=None, body=None, author=None):
 
         if author is None:
             raise Exception('Author Required if Body is Used')
-        quote = QuoteModel(body, author)
+
+    quote = QuoteModel(body, author)
 
     meme = MemeEngine('./tmp')
     path = meme.make_meme(img, quote.body, quote.author)
+
     return path
 
-    if __name__ == "__main__":
 
-        parser = argparse.ArgumentParser(
-            prog="Meme Generator",
-            description="""Generates meme from a given picture and
-            a quote with an quthor""",
-            epilog='Let us hope it will work')
-        parser.version = '1.0'
+if __name__ == "__main__":
 
-        parser.add_argument("-a", "--author", type=str, default=None)
-        parser.add_argument("-b", "--body", type=str, default=None)
-        parser.add_argument("-p", "--path", type=str, default=None)
-        parser.add_argument("-v", "--version", action="version")
+    parser = argparse.ArgumentParser(
+        prog="Meme Generator",
+        description="""Generates meme from a given picture and
+        a quote with an quthor""",
+        epilog='Let us hope it will work')
+    parser.version = '1.0'
 
-        args = parser.parse_args()
-        print(generate_meme(args.path, args.body, args.author))
+    parser.add_argument("-a", "--author", type=str, default=None)
+    parser.add_argument("-b", "--body", type=str, default=None)
+    parser.add_argument("-p", "--path", type=str, default=None)
+    parser.add_argument("-v", "--version", action="version")
+
+    args = parser.parse_args()
+    print(generate_meme(args.path, args.body, args.author))

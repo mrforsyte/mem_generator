@@ -1,11 +1,14 @@
 # ingetsor.py
 """
-This module implements Ingesto class that implements all IngesterInterfaces to handle
+This module implements Ingesto class that implements
+all IngesterInterfaces to handle
 files of multiple types
 """
 
 
-from ingestorInterface import PDFIngestor, TXTIngestor, CSVIngestor, DocsIngestor
+from quoteengine.ingesface import PDFIngestor, TXTIngestor,
+from quoteengine.ingesface import CSVIngestor, DocsIngestor
+
 
 class Ingestor:
     """ Class that implements all types of
