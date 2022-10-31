@@ -14,7 +14,7 @@ import docx
 import os
 import random
 import pandas as df
-from exception.cexception import TextTooLongError, InvalidTypeError
+from exceptions.cexceptions import TextTooLongError, InvalidTypeError
 
 
 class IngestorInterface(ABC):

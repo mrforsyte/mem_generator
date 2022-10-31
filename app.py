@@ -12,7 +12,8 @@ from flask import Flask, render_template, abort, request
 from quoteengine.ingestor import Ingestor
 from quoteengine.ingesface import QuoteModel
 from meme_engine import MemeEngine
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
+from exceptions.cexceptions import InvalidUrlError
 
 app = Flask(__name__)
 meme = MemeEngine('./static')
@@ -70,9 +71,13 @@ def meme_post():
     try:
         img = Image.open(requests.get(img_url, stream=True).raw)
 
-    except requests.exception.ConnectionError:
+    except requests.exceptions.HTTPError as err:
+        print(f'Invalid URL: "{err}"')
         print('Plz make sure that the url of the image leads to the image')
-        return render_template("error_meme.html")
+        return render_template("meme_error.html")
+    except UnidentifiedImageError as error:
+        print(error)
+        return render_template("meme_error.html")
 
     os.mkdir("./arbitrary")
     img.save("./arbitrary/img.png")

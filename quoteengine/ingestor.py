@@ -6,7 +6,7 @@ files of multiple types
 """
 
 
-from quoteengine.ingesface import PDFIngestor, TXTIngestor,
+from quoteengine.ingesface import PDFIngestor, TXTIngestor
 from quoteengine.ingesface import CSVIngestor, DocsIngestor
 
 
