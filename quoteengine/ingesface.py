@@ -14,6 +14,7 @@ import docx
 import os
 import random
 import pandas as df
+from exception.cexception import TextTooLongError, InvalidTypeError
 
 
 class IngestorInterface(ABC):
@@ -94,6 +95,10 @@ class CSVIngestor(IngestorInterface):
             file = df.read_csv(path)
         except FileNotFoundError:
             print('File was not found on this path')
+        except TextTooLongError:
+            print('Too many characters in the file')
+        except InvalidTypeError:
+            print('Invalid type of the open file')
 
         for row in file.iterrows():
             q = QuoteModel(row[1][1], row[1][0])
@@ -113,6 +118,10 @@ class DocsIngestor(IngestorInterface):
 
         except FileNotFoundError:
             print('File was not found on this path')
+        except TextTooLongError:
+            print('Too many characters in the file')
+        except InvalidTypeError:
+            print('Invalid type of the open file')
 
         if 'doc' not in file_extension:
             return False
@@ -126,6 +135,10 @@ class DocsIngestor(IngestorInterface):
 
         except FileNotFoundError:
             print('File was not found on this path')
+        except TextTooLongError:
+            print('Too many characters in the file')
+        except InvalidTypeError:
+            print('Invalid type of the open file')
 
         list_of_quotes = document.paragraphs
         actual_quotes = [_ for _ in list_of_quotes if _.text]
@@ -151,6 +164,10 @@ class TXTIngestor(IngestorInterface):
 
         except FileNotFoundError:
             print('File was not found on this path')
+        except TextTooLongError:
+            print('Too many characters in the file')
+        except InvalidTypeError:
+            print('Invalid type of the open file')
 
         if 'txt' not in file_extension:
             return False
@@ -167,6 +184,11 @@ class TXTIngestor(IngestorInterface):
 
         except FileNotFoundError:
             print('File was not found on this path')
+        except TextTooLongError:
+            print('Too many characters in the file')
+        except InvalidTypeError:
+            print('Invalid type of the open file')
+
         for _ in text:
             quote, author = _.split('-')
             quote_author = QuoteModel(author, quote)
