@@ -1,5 +1,8 @@
-#app.py
-""" THis module realizes web app implementation of the meme generator."""
+# app.py
+""" THis module realizes web app
+implementation of the meme generator.
+"""
+
 
 import random
 import os
@@ -13,6 +16,7 @@ from PIL import Image
 app = Flask(__name__)
 meme = MemeEngine('./static')
 
+
 def setup():
     """ Load all resources """
 
@@ -21,7 +25,6 @@ def setup():
                    './_data/DogQuotes/DogQuotesDOCX.docx',
                    './_data/DogQuotes/DogQuotesPDF.pdf',
                    './_data/DogQuotes/DogQuotesCSV.csv']
-
 
     for f in quote_files:
         quotes.extend(Ingestor.parse(f))
@@ -43,7 +46,7 @@ def meme_rand():
 
     img = random.choice(imgs)
     quote = random.choice(quotes)
-    
+
     path = meme.make_meme(img, quote.body, quote.author)
     return render_template('meme.html', path=path)
 
@@ -51,7 +54,7 @@ def meme_rand():
 @app.route('/create', methods=['GET'])
 def meme_form():
     """ User input for meme information """
-    
+
     return render_template('meme_form.html')
 
 
@@ -59,7 +62,6 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
-    
     img_url = request.form.get("image_url")
     author = request.form.get("author")
     body = request.form.get("body")
@@ -67,9 +69,9 @@ def meme_post():
     img = Image.open(requests.get(img_url, stream=True).raw)
     os.mkdir("./arbitrary")
     img.save("./arbitrary/img.png")
-    path = meme.make_meme("./arbitrary/img.png",author,body)
-    shutil.rmtree("./arbitrary")    
-    
+    path = meme.make_meme("./arbitrary/img.png", author, body)
+    shutil.rmtree("./arbitrary")
+
     return render_template('meme.html', path=path)
 
 
