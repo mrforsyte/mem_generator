@@ -67,7 +67,13 @@ def meme_post():
     author = request.form.get("author")
     body = request.form.get("body")
 
-    img = Image.open(requests.get(img_url, stream=True).raw)
+    try:
+        img = Image.open(requests.get(img_url, stream=True).raw)
+
+    except requests.exception.ConnectionError:
+        print('Plz make sure that the url of the image leads to the image')
+        return render_template("error_meme.html")
+
     os.mkdir("./arbitrary")
     img.save("./arbitrary/img.png")
     path = meme.make_meme("./arbitrary/img.png", author, body)
